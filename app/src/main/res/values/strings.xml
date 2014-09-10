@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">TipCalculator</string>
+    <string name="label_bill">Bill</string>
+    <string name="label_tip">Tip</string>
+    <string name="action_settings">Settings</string>
+    <string name="change_tip_value">Change Tip</string>
+    <string name="total_label">Total</string>
+    <string name="radio_bad">Bad</string>
+    <string name="radio_ok">Ok</string>
+    <string name="radio_good">Good</string>
+    <string name="radio_group_label">Availability</string>
+    <string name="checkbox_friendy">Friendly</string>
+    <string name="checkbox_specials">Specials</string>
+    <string name="checkbox_opinion">Opinion</string>
+    <string name="checkbox_label">Introduction</string>
+    <string name="chrono_label">Time waited before service:</string>
+    <string name="ps_spinner_label">Problem Solving</string>
+    <string name="chrono_start">Start</string>
+    <string name="chrono_paus">Paus</string>
+    <string name="chrono_reset">Reset</string>
+    <string name="generous_label">Feeling generous?</string>
+    <string-array name="ps_spinner">
+        <item>Bad</item>
+        <item>Ok</item>
+        <item>Good</item>
+    </string-array>
+
+</resources>

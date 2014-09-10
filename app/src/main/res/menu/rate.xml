@@ -1,0 +1,22 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".RateActivity">
+    <item android:id="@+id/chronoStart"
+        android:title="@string/chrono_start"
+        android:icon="@drawable/ic_action_play"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        />
+    <item android:id="@+id/chronoPaus"
+        android:title="@string/chrono_paus"
+        android:icon="@drawable/ic_action_pause"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        />
+    <item android:id="@+id/chronoReset"
+        android:title="@string/chrono_reset"
+        android:icon="@drawable/ic_action_replay"
+        android:orderInCategory="100"
+        android:showAsAction="ifRoom"
+        />
+</menu>
