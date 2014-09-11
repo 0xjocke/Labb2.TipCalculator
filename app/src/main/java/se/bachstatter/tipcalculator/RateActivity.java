@@ -20,8 +20,7 @@ import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
 import android.view.View.OnFocusChangeListener;
-
-
+import android.widget.Toast;
 
 
 public class RateActivity extends Activity implements OnItemSelectedListener,
@@ -31,6 +30,7 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
     private final static int OK = 0;
     private final static int BAD = -1;
     private final static int GOOD = 1;
+    private final static String GREEDY_TOAST = "That's mean, please give a few percent";
 
     //EditText variables
     private EditText editTextBill;
@@ -338,6 +338,9 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         tipPercent = progress;
+        if (tipPercent == 0){
+            Toast.makeText(this, GREEDY_TOAST, Toast.LENGTH_LONG).show();
+        }
         setTextToTextViews();
     }
 
@@ -348,6 +351,7 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
 
 
     /**
+     * TODO comment new if
      * Sets tip percent text view and the seekbar to current tipPercent.
      * if Bill text not is empty get the bill value and parse it to double
      * Parse the tipPercent variable to decimals
@@ -359,23 +363,26 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
      *
      */
     private void setTextToTextViews(){
-        textViewTipPercent.setText(String.valueOf(tipPercent));
-        seekBarChangeTip.setProgress(tipPercent);
-        if (editTextBill.getText().length() != 0){
-            Double bill =Double.parseDouble(editTextBill.getText().toString());
-            Double percent = Double.parseDouble(String.valueOf(tipPercent))/100;
+        if(tipPercent >= 0) {
+            textViewTipPercent.setText(String.valueOf(tipPercent));
+            seekBarChangeTip.setProgress(tipPercent);
 
-            Double tip = bill * percent;
-            tip = (double)Math.round(tip * 100) / 100;
+            if (editTextBill.getText().length() != 0) {
+                Double bill = Double.parseDouble(editTextBill.getText().toString());
+                Double percent = Double.parseDouble(String.valueOf(tipPercent)) / 100;
 
-            Double total = bill + tip;
-            total = (double)Math.round(total * 100) / 100;
+                Double tip = bill * percent;
+                tip = (double) Math.round(tip * 100) / 100;
 
-            textViewTotal.setText(String.valueOf(total));
-            textViewTip.setText(String.valueOf(tip));
-        }else{
-            textViewTotal.setText("");
-            textViewTip.setText("");
+                Double total = bill + tip;
+                total = (double) Math.round(total * 100) / 100;
+
+                textViewTotal.setText(String.valueOf(total));
+                textViewTip.setText(String.valueOf(tip));
+            } else {
+                textViewTotal.setText("");
+                textViewTip.setText("");
+            }
         }
     }
 
