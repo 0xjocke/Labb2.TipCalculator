@@ -3,7 +3,7 @@
 
     <string name="app_name">TipCalculator</string>
     <string name="label_bill">Bill</string>
-    <string name="label_tip">Tip</string>
+    <string name="label_tip">Tip: </string>
     <string name="action_settings">Settings</string>
     <string name="change_tip_value">Change Tip</string>
     <string name="total_label">Total</string>

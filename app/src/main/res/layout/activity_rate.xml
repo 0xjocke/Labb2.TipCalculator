@@ -40,12 +40,11 @@
         android:layout_alignBottom="@+id/editTextBill"
         android:layout_centerHorizontal="true" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
         android:ems="10"
-        android:id="@+id/editTextTip"
+        android:id="@+id/textViewTip"
         android:layout_alignBottom="@+id/editTextBill"
         android:layout_toRightOf="@+id/labelTip"
         android:layout_toEndOf="@+id/labelTip" />

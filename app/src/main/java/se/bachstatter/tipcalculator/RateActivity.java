@@ -16,9 +16,15 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.AdapterView.OnItemSelectedListener;
+import android.widget.Chronometer.OnChronometerTickListener;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 
 
-public class RateActivity extends Activity implements AdapterView.OnItemSelectedListener, Chronometer.OnChronometerTickListener, SeekBar.OnSeekBarChangeListener  {
+
+public class RateActivity extends Activity implements OnItemSelectedListener,
+        OnChronometerTickListener, OnSeekBarChangeListener, View.OnFocusChangeListener {
+
     //State consonants
     public final static int OK = 0;
     public final static int BAD = -1;
@@ -26,7 +32,7 @@ public class RateActivity extends Activity implements AdapterView.OnItemSelected
 
     //EditText variables
     EditText editTextBill;
-    EditText editTextTip;
+    TextView textViewTip;
     EditText editTextTotal;
 
     //Textview
@@ -50,36 +56,42 @@ public class RateActivity extends Activity implements AdapterView.OnItemSelected
     Boolean chronoIsCounting = false;
     long timeWhenStopped = 0;
 
-    // State variables
-    int tipPercent = 10;
+    // State variables, standard tip percent is 10%.
+    Integer tipPercent = 10;
 
-
+    /**
+     * On create run initilizespinner, run setVariablesAndListeners
+     * and set
+     * @param savedInstanceState
+     */
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_rate);
         initializeSpinner();
-        setVariables();
-        chrono = (Chronometer)findViewById(R.id.chrono);
-        chrono.setOnChronometerTickListener(this);
-
+        setVariablesAndListeners();
     }
 
     /**
-     * Sets all variables
+     * Sets all variables and listenters
+     * Also sets seekbar to tipPercent 10%.
      */
-    private void setVariables() {
+    private void setVariablesAndListeners() {
         editTextBill = (EditText)findViewById(R.id.editTextBill);
-        editTextTip = (EditText)findViewById(R.id.editTextTip);
-        editTextTotal = (EditText)findViewById(R.id.editTextBill);
+        editTextBill.setOnFocusChangeListener(this);
+        textViewTip = (TextView)findViewById(R.id.textViewTip);
+        editTextTotal = (EditText)findViewById(R.id.editTextTotal);
 
         textViewTipPercent = (TextView)findViewById(R.id.textViewTipPercent);
 
         switchGenerous = (Switch)findViewById(R.id.switchGenerous);
 
         seekBarChangeTip = (SeekBar)findViewById(R.id.seekBarChangeTip);
+        seekBarChangeTip.setProgress(tipPercent);
         seekBarChangeTip.setOnSeekBarChangeListener(this);
 
+        chrono = (Chronometer)findViewById(R.id.chrono);
+        chrono.setOnChronometerTickListener(this);
     }
 
 
@@ -181,7 +193,7 @@ public class RateActivity extends Activity implements AdapterView.OnItemSelected
                     tipPercent -= 1;
                 break;
         }
-        textViewTipPercent.setText(String.valueOf(tipPercent));
+        setTextToTextViews();
     }
 
     /**
@@ -215,7 +227,7 @@ public class RateActivity extends Activity implements AdapterView.OnItemSelected
                 }
                 break;
         }
-        textViewTipPercent.setText(String.valueOf(tipPercent));
+        setTextToTextViews();
     }
 
     /**
@@ -269,7 +281,7 @@ public class RateActivity extends Activity implements AdapterView.OnItemSelected
                 tipPercent += checkStateReturnTipPercentChange(GOOD, spinnerState);
                 spinnerState = GOOD;
         }
-        textViewTipPercent.setText(String.valueOf(tipPercent));
+        setTextToTextViews();
 
     }
 
@@ -292,7 +304,7 @@ public class RateActivity extends Activity implements AdapterView.OnItemSelected
         }else{
             tipPercent -= 5;
         }
-        textViewTipPercent.setText(String.valueOf(tipPercent));
+        setTextToTextViews();
 
 
     }
@@ -316,7 +328,7 @@ public class RateActivity extends Activity implements AdapterView.OnItemSelected
 
         if ( ( elapsedSeconds % 30 ) == 0 && elapsedSeconds != 0 ){
             tipPercent -= 1;
-            textViewTipPercent.setText(String.valueOf(tipPercent));
+            setTextToTextViews();
         }
     }
 
@@ -332,11 +344,38 @@ public class RateActivity extends Activity implements AdapterView.OnItemSelected
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         tipPercent = progress;
-        textViewTipPercent.setText(String.valueOf(tipPercent));
+        setTextToTextViews();
     }
 
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {}
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
+
+    private void setTextToTextViews(){
+        textViewTipPercent.setText(String.valueOf(tipPercent));
+        seekBarChangeTip.setProgress(tipPercent);
+        if (editTextBill.getText().length() != 0){
+            Double bill =Double.parseDouble(editTextBill.getText().toString());
+            Double percent = Double.parseDouble(String.valueOf(tipPercent))/100;
+
+            Double tip = bill * percent;
+            tip = (double)Math.round(tip * 100) / 100;
+
+            Double total = bill + tip;
+            total = (double)Math.round(total * 100) / 100;
+
+            editTextTotal.setText(String.valueOf(total));
+            textViewTip.setText(String.valueOf(tip));
+        }else{
+            editTextTotal.setText("");
+            textViewTip.setText("");
+        }
+    }
+
+    @Override
+    public void onFocusChange(View v, boolean hasFocus) {
+        if(!hasFocus)
+            setTextToTextViews();
+    }
 }
