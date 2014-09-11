@@ -21,9 +21,10 @@
     <string name="chrono_paus">Paus</string>
     <string name="chrono_reset">Reset</string>
     <string name="generous_label">Feeling generous?</string>
+    <string name="tip_percent_label">Tip percent</string>
     <string-array name="ps_spinner">
-        <item>Bad</item>
         <item>Ok</item>
+        <item>Bad</item>
         <item>Good</item>
     </string-array>
 
