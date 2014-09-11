@@ -7,57 +7,55 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.Chronometer;
+import android.widget.Chronometer.OnChronometerTickListener;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.AdapterView.OnItemSelectedListener;
-import android.widget.Chronometer.OnChronometerTickListener;
-import android.widget.SeekBar.OnSeekBarChangeListener;
+import android.view.View.OnFocusChangeListener;
+
 
 
 
 public class RateActivity extends Activity implements OnItemSelectedListener,
-        OnChronometerTickListener, OnSeekBarChangeListener, View.OnFocusChangeListener {
+        OnChronometerTickListener, OnSeekBarChangeListener, OnFocusChangeListener {
 
     //State consonants
-    public final static int OK = 0;
-    public final static int BAD = -1;
-    public final static int GOOD = 1;
+    private final static int OK = 0;
+    private final static int BAD = -1;
+    private final static int GOOD = 1;
 
     //EditText variables
-    EditText editTextBill;
-    TextView textViewTip;
-    EditText editTextTotal;
+    private EditText editTextBill;
 
     //Textview
-    TextView textViewTipPercent;
+    private TextView textViewTip;
+    private TextView textViewTotal;
+    private TextView textViewTipPercent;
 
-    //Radiobutton variables
-    int radioGroupState;
+    //Radiobutton variable
+    private int radioGroupState;
 
-    //Spinner variables
-    Spinner psSpinner;
-    int spinnerState;
-
-    //Switch variables
-    Switch switchGenerous;
+    //Spinner variable
+    private int spinnerState;
 
     //Seekbar variable
-    SeekBar seekBarChangeTip;
+    private SeekBar seekBarChangeTip;
 
     //Chronometer variables
-    Chronometer chrono;
-    Boolean chronoIsCounting = false;
-    long timeWhenStopped = 0;
+    private Chronometer mChronometer;
+    private Boolean chronoIsCounting = false;
+    private long timeWhenStopped = 0;
 
     // State variables, standard tip percent is 10%.
-    Integer tipPercent = 10;
+    private Integer tipPercent = 10;
 
     /**
      * On create run initilizespinner, run setVariablesAndListeners
@@ -80,18 +78,16 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
         editTextBill = (EditText)findViewById(R.id.editTextBill);
         editTextBill.setOnFocusChangeListener(this);
         textViewTip = (TextView)findViewById(R.id.textViewTip);
-        editTextTotal = (EditText)findViewById(R.id.editTextTotal);
+        textViewTotal = (TextView)findViewById(R.id.textViewTotal);
 
         textViewTipPercent = (TextView)findViewById(R.id.textViewTipPercent);
-
-        switchGenerous = (Switch)findViewById(R.id.switchGenerous);
 
         seekBarChangeTip = (SeekBar)findViewById(R.id.seekBarChangeTip);
         seekBarChangeTip.setProgress(tipPercent);
         seekBarChangeTip.setOnSeekBarChangeListener(this);
 
-        chrono = (Chronometer)findViewById(R.id.chrono);
-        chrono.setOnChronometerTickListener(this);
+        mChronometer = (Chronometer)findViewById(R.id.chrono);
+        mChronometer.setOnChronometerTickListener(this);
     }
 
 
@@ -102,8 +98,8 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
      * Specify the layout to use when the list of choices appears
      * And finally add the adapter to the spinner
      */
-    public void initializeSpinner(){
-        psSpinner = (Spinner) findViewById(R.id.psSpinner);
+    void initializeSpinner(){
+        Spinner psSpinner = (Spinner) findViewById(R.id.psSpinner);
         ArrayAdapter<CharSequence> adapter = ArrayAdapter.createFromResource(this,
                 R.array.ps_spinner, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -132,30 +128,30 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
             case R.id.chronoStart:
                 //Start from 0 + time when stopped
                 // Set is counting to true to stop double click on pause button.
-                // Stat the chronometer
-                chrono.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
+                // Stat the mChronometer
+                mChronometer.setBase(SystemClock.elapsedRealtime() + timeWhenStopped);
                 chronoIsCounting = true;
-                chrono.start();
+                mChronometer.start();
                 break;
             case R.id.chronoPaus:
-                // If chronometer is counting set the elapsed time to timewhen stopped
+                // If mChronometer is counting set the elapsed time to timewhen stopped
                 // Stop the chonometer
                 // Set is counting to false to stop double click on pause button.
                 if (chronoIsCounting){
-                    timeWhenStopped = chrono.getBase() - SystemClock.elapsedRealtime();
-                    chrono.stop();
+                    timeWhenStopped = mChronometer.getBase() - SystemClock.elapsedRealtime();
+                    mChronometer.stop();
                     chronoIsCounting = false;
                 }
                 break;
             case R.id.chronoReset:
                 //reset the timewhenstop variable
-                // set chrono is counting to false
-                //stop the chronometer
+                // set mChronometer is counting to false
+                //stop the mChronometer
                 // and reset the time
                 timeWhenStopped = 0;
                 chronoIsCounting = false;
-                chrono.stop();
-                chrono.setBase(SystemClock.elapsedRealtime());
+                mChronometer.stop();
+                mChronometer.setBase(SystemClock.elapsedRealtime());
         }
         return super.onOptionsItemSelected(item);
     }
@@ -165,7 +161,7 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
      * If it already was checked subtract 1 from tipPercent
      * If it was unchecked add 1 to tipPercent
      *
-     * Finnaly TODO
+     * Finnaly run setTextToTextViews()
      * @param view
      */
     public void onCheckboxClicked(View view) {
@@ -201,7 +197,7 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
      * and run checkStateReturnTipPercentChange() and
      * send it both chosen value and the state (last chosen value)
      * After that set the radioGroupState to current value
-     * Finally TODO
+     * Finally setTextToTextViews()
      *
      * @param view
      */
@@ -231,7 +227,7 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
     }
 
     /**
-     * Checks the state (the last value the user picked) if its the firsttime or ok we return the chosen value
+     * Checks the state (the last value the user picked) if its the first time or ok we return the chosen value
      * If the state is good we need to subtract 1 from the chosen value.
      * If the state is bad we need to add 1 to the chosen value.
      * If we dont do this the the tip amount will go crazy if the user
@@ -240,7 +236,7 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
      *
      *
      * @param chosenValue The value the user has chosen right now
-     * @param state The value the user choosed last time, if first time = 0
+     * @param state The value the user chose last time, if first time = 0
      * @return int  that represents the correct change given the state.
      */
     private int checkStateReturnTipPercentChange(int chosenValue, int state) {
@@ -260,7 +256,7 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
      * On item selected run checkStateReturnTipPercentChange() and
      * send it both chosen value and the state (last chosen value)
      * After that set the spinnerState to current value
-     * And finally convert TODO
+     * And finally setTextToTextViews()
      * @param parent
      * @param view
      * @param position
@@ -294,7 +290,7 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
      * On switch click check is the switch is on.
      * If it is on add 5 to tipPercent
      * If it is off subtract 5 from tipPercent
-     * Finally TODO
+     * Finally run setTextToTextViews()
      * @param view
      */
     public void onSwitchClick(View view) {
@@ -310,15 +306,13 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
     }
 
     /**
-     * On chronometer tick get elapsed seconds. elapsedRealTime-chronometer.getBase will give milliseconds
+     * On mChronometer tick get elapsed seconds. elapsedRealTime-mChronometer.getBase will give milliseconds
      * Thats why I divide it by 1000.
      * If elapsedSeconds % 30 == 0 means 30 seconds has gone.
      * I also check so that elapsed seconds isnt 0 since all values under 1000 miliseconds will be
      * rounded down to 0.
      * Then I subtract 1 from the tipPercent.
-     *
-     * In english: subtract 1 from tipPercent every 30 seconds
-     * And finally TODO
+     * And finally run setTextToTextViews()
      *
      * @param chronometer
      */
@@ -335,7 +329,7 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
     /**
      * One slider to rule them all.
      * takes the slider progress/value and sets it to tipPercent variable
-     * Finally TODO
+     * Finally run setTextToTextViews()
      *
      * @param seekBar
      * @param progress
@@ -352,6 +346,18 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {}
 
+
+    /**
+     * Sets tip percent text view and the seekbar to current tipPercent.
+     * if Bill text not is empty get the bill value and parse it to double
+     * Parse the tipPercent variable to decimals
+     * Calculate and round the tip to two decimals.
+     * Calculate and round the total to two decimals
+     * Set these values to total textview and tip textview
+     *
+     * else if bill edittext was empty, empty percent and total textview
+     *
+     */
     private void setTextToTextViews(){
         textViewTipPercent.setText(String.valueOf(tipPercent));
         seekBarChangeTip.setProgress(tipPercent);
@@ -365,14 +371,19 @@ public class RateActivity extends Activity implements OnItemSelectedListener,
             Double total = bill + tip;
             total = (double)Math.round(total * 100) / 100;
 
-            editTextTotal.setText(String.valueOf(total));
+            textViewTotal.setText(String.valueOf(total));
             textViewTip.setText(String.valueOf(tip));
         }else{
-            editTextTotal.setText("");
+            textViewTotal.setText("");
             textViewTip.setText("");
         }
     }
 
+    /**
+     * If it doesnt have focus and has triggered a focus change (blur) run setTextToTextViews()
+     * @param v
+     * @param hasFocus
+     */
     @Override
     public void onFocusChange(View v, boolean hasFocus) {
         if(!hasFocus)

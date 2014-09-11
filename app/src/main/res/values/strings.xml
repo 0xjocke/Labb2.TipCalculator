@@ -8,7 +8,7 @@
     <string name="change_tip_value">Change Tip</string>
     <string name="total_label">Total</string>
     <string name="radio_bad">Bad</string>
-    <string name="radio_ok">Ok</string>
+    <string name="radio_ok">OK</string>
     <string name="radio_good">Good</string>
     <string name="radio_group_label">Availability</string>
     <string name="checkbox_friendy">Friendly</string>

@@ -186,18 +186,17 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/total_label"
         android:id="@+id/totalLabel"
-        android:layout_toStartOf="@+id/editTextTotal"
+        android:layout_toStartOf="@+id/textViewTotal"
         android:layout_below="@+id/seekBarChangeTip"
         android:layout_toRightOf="@+id/labelBill"
         android:layout_toEndOf="@+id/labelBill"
         android:layout_marginTop="30dp" />
 
-    <EditText
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="number"
         android:ems="10"
-        android:id="@+id/editTextTotal"
+        android:id="@+id/textViewTotal"
         android:layout_toEndOf="@+id/labelRadioGroup"
         android:layout_alignBaseline="@+id/totalLabel"
         android:layout_alignBottom="@+id/totalLabel"
