@@ -11,10 +11,6 @@
 
     <item name="android:listChoiceIndicatorSingle">@drawable/mytheme_btn_radio_holo_dark</item>
 
-    <item name="android:buttonStyle">@style/ButtonMyTheme</item>
-
-    <item name="android:imageButtonStyle">@style/ImageButtonMyTheme</item>
-
     <item name="android:dropDownSpinnerStyle">@style/SpinnerMyTheme</item>
 
     <item name="android:seekBarStyle">@style/SeekBarMyTheme</item>
