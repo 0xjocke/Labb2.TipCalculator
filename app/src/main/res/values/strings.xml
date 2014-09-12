@@ -11,7 +11,7 @@
     <string name="radio_ok">OK</string>
     <string name="radio_good">Good</string>
     <string name="radio_group_label">Availability</string>
-    <string name="checkbox_friendy">Friendly</string>
+    <string name="checkbox_friendly">Friendly</string>
     <string name="checkbox_specials">Specials</string>
     <string name="checkbox_opinion">Opinion</string>
     <string name="checkbox_label">Introduction</string>
