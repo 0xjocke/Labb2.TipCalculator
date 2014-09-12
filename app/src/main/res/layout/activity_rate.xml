@@ -9,7 +9,6 @@
     tools:context=".RateActivity"
     android:id="@+id/rateRelativeLayout">
 
-
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -240,6 +239,5 @@
         android:layout_alignStart="@+id/textViewTipPercentLabel"
         android:layout_alignRight="@+id/textViewTipPercentLabel"
         android:layout_alignEnd="@+id/textViewTipPercentLabel" />
-
 
 </RelativeLayout>
